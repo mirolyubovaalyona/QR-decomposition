@@ -2,6 +2,21 @@ import numpy as np
 from math import sqrt
 
 
+def gs(X):
+    O = np.zeros(X.shape)
+    for i in range(X.shape[1]):
+        # orthogonalization
+        vector = X[:, i]
+        space = O[:, :i]
+        projection = vector @ space
+        vector = vector - np.sum(projection * space, axis=1)
+        # normalization
+        norm = np.sqrt(vector @ vector)
+        vector /= abs(norm) < 1e-8 and 1 or norm
+        
+        O[:, i] = vector
+    return O
+
 
 def qr(A):
     m, n = A.shape
@@ -11,7 +26,7 @@ def qr(A):
         H[i:, i:] = make_householder(A[i:, i])
         Q = np.dot(Q, H)
         A = np.dot(H, A)
-    return Q, A
+    return Q.round(6), A.round(6)
  
 def make_householder(a):
     v = a / (a[0] + np.copysign(np.linalg.norm(a), a[0]))
@@ -21,46 +36,41 @@ def make_householder(a):
     return H
 
 
-a=[[  5,  11, -15],
- [ 12,  34, -51],
- [-24, -43,  92]]
+a=[[20, 2, 3, 7],
+[1, 12, -2, -5],
+[5, -3, 13, 0],
+[0, 0, -3, 15]]
 
 a=np.array(a)
 
-b=[12, 13, 14]
+b=[5, 4, -3, 7]
 
 n=len(b)
 
 qq, rr= np.linalg.qr(a)
-q, r = qr(a)
-q= q.round(6)
-r= r.round(6)
+
+#q, r = qr(a)
+q=gs(a)
+r=q.transpose().dot(a)
 
 print(qq)
 print(rr)
 
+print("То что я считаю")
 print(q)
 print(r)
 
+y=q.transpose().dot(b)
 
-y=[0]*n
 x=[0]*n
-
-y[0]=b[0]/t[0][0]
-for i in range(1, n):
-    s = 0;
-    for k in range(0, i):
-        s  += t[i][k]*y[k]
-    y[i] = (b[i] - s)/t[i][i]
-
-
-x[n-1]=y[n-1]/tt[n-1][n-1]
-for i in range(n-2, -1, -1):
-    ss=0
+for i in range(n-1, -1, -1):
+    s=0
     for k in range(n-1, i, -1):
-        ss = ss+ tt[i][k]*x[k]
-    x[i] = (y[i] - ss)/tt[i][i]
+        s = s+ r[i][k]*x[k]
+    x[i] = (y[i] - s)/rr[i][i]
 
+ 
+x=np.linalg.solve(r, y)
 print("x:", x)
 
 print(np.linalg.solve(a, b))
