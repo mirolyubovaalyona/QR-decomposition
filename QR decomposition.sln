@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "QR decomposition", "QR decomposition.pyproj", "{4DF09B6A-09DA-4D1A-89A9-72086A73539F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DF09B6A-09DA-4D1A-89A9-72086A73539F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF09B6A-09DA-4D1A-89A9-72086A73539F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40BE07F4-0928-485C-87B8-4B9401844D3C}
+	EndGlobalSection
+EndGlobal
