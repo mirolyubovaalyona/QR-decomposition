@@ -2,63 +2,39 @@ import numpy as np
 from math import sqrt
 
 
-def gs(X):
-    O = np.zeros(X.shape)
-    for i in range(X.shape[1]):
-        # orthogonalization
-        vector = X[:, i]
-        space = O[:, :i]
-        projection = vector @ space
-        vector = vector - np.sum(projection * space, axis=1)
-        # normalization
-        norm = np.sqrt(vector @ vector)
-        vector /= abs(norm) < 1e-8 and 1 or norm
-        
-        O[:, i] = vector
-    return O
+
+def gs(X, n):
+    a=X.transpose()
+    u=e=[np.array(n)]*n
+    for i in range(n):
+        u[i]=np.array(a[i])
+        for j in range(i-1, -1, -1):
+            aa=np.array(a[i])
+            ee=np.array(e[j])
+            u[i]=u[i]-np.array((np.array(aa).dot(np.array(ee)))).dot(np.array(ee))
+        nor=np.linalg.norm(u[i],  ord=2)
+        e[i]=u[i]/nor
+     
+    return np.array(e).transpose()
 
 
-def qr(A):
-    m, n = A.shape
-    Q = np.eye(m)
-    for i in range(n - (m == n)):
-        H = np.eye(m)
-        H[i:, i:] = make_householder(A[i:, i])
-        Q = np.dot(Q, H)
-        A = np.dot(H, A)
-    return Q.round(6), A.round(6)
- 
-def make_householder(a):
-    v = a / (a[0] + np.copysign(np.linalg.norm(a), a[0]))
-    v[0] = 1
-    H = np.eye(a.shape[0])
-    H -= (2 / np.dot(v, v)) * np.dot(v[:, None], v[None, :])
-    return H
 
 
-a=[[20, 2, 3, 7],
-[1, 12, -2, -5],
-[5, -3, 13, 0],
-[0, 0, -3, 15]]
+a=[[1, 2, 4],
+[3, 3, 2],
+[4, 1, 3]]
 
 a=np.array(a)
 
-b=[5, 4, -3, 7]
+b=[5, 4, -3]
 
 n=len(b)
 
-qq, rr= np.linalg.qr(a)
 
-#q, r = qr(a)
-q=gs(a)
+q=gs(a, n)
 r=q.transpose().dot(a)
 
-print(qq)
-print(rr)
 
-print("То что я считаю")
-print(q)
-print(r)
 
 y=q.transpose().dot(b)
 
@@ -67,7 +43,7 @@ for i in range(n-1, -1, -1):
     s=0
     for k in range(n-1, i, -1):
         s = s+ r[i][k]*x[k]
-    x[i] = (y[i] - s)/rr[i][i]
+    x[i] = (y[i] - s)/r[i][i]
 
  
 x=np.linalg.solve(r, y)
