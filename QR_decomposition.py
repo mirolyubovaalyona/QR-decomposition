@@ -20,9 +20,9 @@ def gs(X, n):
 
 
 
-a=[[1, 2, 4],
-[3, 3, 2],
-[4, 1, 3]]
+a=[[2, -2, 18],
+[2, 1, 0],
+[1, 2, 0]]
 
 a=np.array(a)
 
@@ -33,7 +33,8 @@ n=len(b)
 
 q=gs(a, n)
 r=q.transpose().dot(a)
-
+print(q)
+print(r)
 
 
 y=q.transpose().dot(b)
